@@ -3,6 +3,7 @@ import { useState } from 'react';
 function App() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState("all"); // Estado para manejar el filtro
 
   const addTask = () => {
     if (task.trim() !== "") {
@@ -31,6 +32,13 @@ function App() {
   const sortedTasks = [...tasks].sort((a, b) => {
     if (a.completed === b.completed) return 0;
     return a.completed ? 1 : -1;
+  });
+
+  // Filtrar las tareas según el filtro seleccionado
+  const filteredTasks = sortedTasks.filter((item) => {
+    if (filter === "completed") return item.completed;
+    if (filter === "pending") return !item.completed;
+    return true; // Mostrar todas las tareas
   });
 
   return (
@@ -62,18 +70,61 @@ function App() {
       <h3 style={{ marginTop: "20px", color: "#fff" }}>
         Tareas completadas: {completedTasks} | Tareas pendientes: {remainingTasks}
       </h3>
+      <div style={{ marginBottom: "20px" }}>
+        <button
+          onClick={() => setFilter("all")}
+          style={{
+            padding: "10px 20px",
+            marginRight: "10px",
+            cursor: "pointer",
+            backgroundColor: filter === "all" ? "#007bff" : "#6c757d",
+            color: "#fff",
+            border: "none",
+            borderRadius: "3px",
+          }}
+        >
+          Todas
+        </button>
+        <button
+          onClick={() => setFilter("completed")}
+          style={{
+            padding: "10px 20px",
+            marginRight: "10px",
+            cursor: "pointer",
+            backgroundColor: filter === "completed" ? "#007bff" : "#6c757d",
+            color: "#fff",
+            border: "none",
+            borderRadius: "3px",
+          }}
+        >
+          Completadas
+        </button>
+        <button
+          onClick={() => setFilter("pending")}
+          style={{
+            padding: "10px 20px",
+            cursor: "pointer",
+            backgroundColor: filter === "pending" ? "#007bff" : "#6c757d",
+            color: "#fff",
+            border: "none",
+            borderRadius: "3px",
+          }}
+        >
+          Pendientes
+        </button>
+      </div>
       <ul
         style={{
           listStyleType: "none",
           padding: 0,
           maxWidth: "600px",
-          margin: "20px auto", 
-          textAlign: "left", 
+          margin: "20px auto",
+          textAlign: "left",
         }}
       >
-        {sortedTasks.map((item) => (
+        {filteredTasks.map((item) => (
           <li
-            key={item.id} 
+            key={item.id}
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -83,7 +134,7 @@ function App() {
               borderRadius: "5px",
               marginBottom: "10px",
               backgroundColor: item.completed ? "#eae5e4" : "#f7f7f7",
-              color: "#000", 
+              color: "#000",
               textDecoration: item.completed ? "line-through" : "none",
             }}
           >
@@ -104,7 +155,7 @@ function App() {
                 {item.completed ? "Desmarcar" : "Completar"}
               </button>
               <button
-                onClick={() => deleteTask(item.id)} 
+                onClick={() => deleteTask(item.id)}
                 style={{
                   padding: "5px 10px",
                   cursor: "pointer",
