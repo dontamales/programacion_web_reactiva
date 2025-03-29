@@ -1,29 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState("all"); // Estado para manejar el filtro
+  const [tasks, setTasks] = useState(() => {
+    // Cargar las tareas desde localStorage al inicializar el estado
+    const savedTasks = localStorage.getItem("tasks");
+    console.log("Inicializando tareas desde localStorage:", savedTasks); // Depuración
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
+  const [filter, setFilter] = useState("all");
+
+  // Guardar las tareas en localStorage cada vez que cambien
+  useEffect(() => {
+    console.log("Guardando tareas en localStorage:", tasks); // Depuración
+    localStorage.setItem("tasks", JSON.stringify(tasks)); // Guardar las tareas
+  }, [tasks]);
 
   const addTask = () => {
     if (task.trim() !== "") {
-      setTasks([
-        ...tasks,
-        { id: Date.now(), name: task, completed: false },
-      ]);
-      setTask("");
+      const newTask = { id: Date.now(), name: task, completed: false };
+      console.log("Agregando tarea:", newTask); // Depuración
+      setTasks((prevTasks) => [...prevTasks, newTask]); // Usar función para actualizar el estado
+      setTask(""); // Limpiar el campo de entrada
     }
   };
 
   const toggleTask = (id) => {
-    const updatedTasks = tasks.map((item) =>
-      item.id === id ? { ...item, completed: !item.completed } : item
-    );
-    setTasks(updatedTasks);
+    setTasks((prevTasks) => {
+      const updatedTasks = prevTasks.map((item) =>
+        item.id === id ? { ...item, completed: !item.completed } : item
+      );
+      console.log("Actualizando tarea completada:", updatedTasks); // Depuración
+      return updatedTasks;
+    });
   };
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter((item) => item.id !== id));
+    setTasks((prevTasks) => {
+      const updatedTasks = prevTasks.filter((item) => item.id !== id);
+      console.log("Eliminando tarea con ID:", id); // Depuración
+      return updatedTasks;
+    });
   };
 
   const completedTasks = tasks.filter((item) => item.completed).length;
