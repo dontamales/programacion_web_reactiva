@@ -1,20 +1,22 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
 function Calculator() {
   const [num1, setNum1] = useState('');
   const [num2, setNum2] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
+  const [history, setHistory] = useState([]); // Historial de cálculos
 
   const handleCalculation = (operator) => {
     try {
       const number1 = parseFloat(num1);
       const number2 = parseFloat(num2);
-      
+
       if (isNaN(number1) || isNaN(number2)) {
         throw new Error('Ingresa valores numéricos válidos');
       }
+
       let res;
       switch (operator) {
         case '+':
@@ -32,16 +34,33 @@ function Calculator() {
           }
           res = number1 / number2;
           break;
+        case '^':
+          res = Math.pow(number1, number2);
+          break;
+        case '√':
+          if (number1 < 0 && number2 % 2 === 0) {
+            throw new Error('No se puede calcular la raíz par de un número negativo');
+          }
+          res = Math.pow(number1, 1 / number2);
+          break;
         default:
-          throw new Error('Operacion no válida');
+          throw new Error('Operación no válida');
       }
 
       setResult(res);
-      setError(''); //Limpiar mensaje de error si la operación es exitosa
+      setError('');
+      setHistory((prevHistory) => [
+        ...prevHistory,
+        `${number1} ${operator} ${number2} = ${res}`,
+      ]); // Agregar al historial
     } catch (err) {
       setError(err.message);
-      setResult(null); // Limpiar resultado si hay un error
+      setResult(null);
     }
+  };
+
+  const clearHistory = () => {
+    setHistory([]); // Limpiar historial
   };
 
   return (
@@ -66,12 +85,65 @@ function Calculator() {
         <button onClick={() => handleCalculation('-')}>-</button>
         <button onClick={() => handleCalculation('*')}>*</button>
         <button onClick={() => handleCalculation('/')}>/</button>
+        <button onClick={() => handleCalculation('^')}>^</button>
+        <button onClick={() => handleCalculation('√')}>n√x</button>
       </div>
       {result !== null && <h2>Resultado: {result}</h2>}
       {error && <h2 style={{ color: 'red' }}>{error}</h2>}
       <div>
-        <button onClick={() => { setNum1(''); setNum2(''); setResult(null); setError(''); }}>Limpiar</button>
+        <button
+          onClick={() => {
+            setNum1('');
+            setNum2('');
+            setResult(null);
+            setError('');
+          }}
+        >
+          Limpiar
+        </button>
       </div>
+      <h3>Historial de cálculos</h3>
+      <ul
+        style={{
+          color: '#333',
+          listStyleType: 'none',
+          padding: 0,
+          maxWidth: '400px',
+          margin: '20px auto',
+          textAlign: 'left',
+        }}
+      >
+        {history.map((entry, index) => (
+          <li
+            key={index}
+            style={{
+              marginBottom: '10px',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+              backgroundColor: '#f7f7f7',
+            }}
+          >
+            {entry}
+          </li>
+        ))}
+      </ul>
+      {history.length > 0 && (
+        <button
+          onClick={clearHistory}
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            cursor: 'pointer',
+            backgroundColor: '#dc3545',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+          }}
+        >
+          Limpiar Historial
+        </button>
+      )}
     </div>
   );
 }
