@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Galería de Perros</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin: 2rem;
+            }
+
+            h1 {
+                margin-bottom: 1rem;
+            }
+
+            button {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                margin-bottom: 1rem;
+                cursor: pointer;
+            }
+
+            img {
+                max-width: 300px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Galería de Perros Aleatorios</h1>
+        <button onclick="cargarImagen()">Ver otro perro</button>
+        <div id="contenedorImagen">
+            <p>Haz clic en el botón para ver una imagen</p>
+        </div>
+        <script src="script.js"></script>
+    </body>
+
+    </html>
