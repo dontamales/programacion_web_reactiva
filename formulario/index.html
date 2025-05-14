@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Usuarios</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <h1>Registro de Usuarios</h1>
+    <form id="formRegistro">
+        <input type="text" id="nombre" placeholder="Nombre completo" />
+        <input type="email" id="email" placeholder="Correo electrónico" />
+        <button type="submit">Registrar</button>
+    </form>
+    <div id="mensajeError"></div>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>ID</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaUsuarios"></tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+
+</html>
