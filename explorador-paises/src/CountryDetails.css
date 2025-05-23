@@ -1,0 +1,19 @@
+.country-details {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2rem;
+  background: #fff;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  color: #000000;
+}
+.country-details img {
+  width: 120px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+.country-details button {
+  margin-bottom: 1rem;
+}
