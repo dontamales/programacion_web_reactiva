@@ -36,12 +36,14 @@ function App() {
         type="number"
         value={step}
         onChange={(e) => setStep(Number(e.target.value))}
-        style={{ marginBottom: "20px", padding: "5px", width: "50px" , textAlign: "center", fontSize: "16px"}}
+        style={{ marginBottom: "20px", padding: "5px", width: "50px", textAlign: "center", fontSize: "16px" }}
       />
       <br />
       <button onClick={increase}>Aumentar</button>
       <button onClick={decrease}>Disminuir</button>
       <button onClick={reset}>Reiniciar</button>
+      <div>Hinojo López Jesús Eduardo - 21111119</div>
+
     </div>
   );
 }

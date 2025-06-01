@@ -10,6 +10,7 @@ function App() {
       <hr />
       <h2>Leer archivo de texto</h2>
       <FileUploader />
+      <div class="autor">Hinojo López Jesús Eduardo - 21111119</div>
     </div>
   );
 }

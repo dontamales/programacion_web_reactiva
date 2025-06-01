@@ -96,6 +96,11 @@ function App() {
           </li>
         ))}
       </ul>
+      <div style={{
+        textAlign: "center",
+        marginTop: "45px",
+        fontSize: "20px",
+      }}>Hinojo López Jesús Eduardo - 21111119</div>
     </div>
   );
 }

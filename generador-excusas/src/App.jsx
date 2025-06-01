@@ -28,6 +28,8 @@ function App() {
       <button onClick={fetchExcuse} style={{ marginTop: 20, padding: "0.5rem 1.5rem" }}>
         Nueva excusa
       </button>
+      <div>Hinojo López Jesús Eduardo - 21111119</div>
+
     </div>
   );
 }

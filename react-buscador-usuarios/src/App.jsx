@@ -33,6 +33,7 @@ function App() {
           <p>No se encontraron usuarios.</p>
         )}
       </div>
+      <div>Hinojo López Jesús Eduardo - 21111119</div>
     </div>
   );
 }
