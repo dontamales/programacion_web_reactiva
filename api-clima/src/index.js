@@ -1,7 +1,6 @@
-// src/index.js
 const express = require("express");
 const cors = require("cors");
-const conditions = require("./data/conditions");
+const cities = require("./data/cities"); // Importamos el array de ciudades
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,49 +9,43 @@ app.use(cors());
 app.use(express.json());
 
 /**
- * Retorna un entero aleatorio entre min y max (ambos incluidos).
- */
-function getRandomIntInclusive(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-/**
  * GET /weather
- *   Parámetro query: city (string) - obligatorio.
- *   Retorna JSON con la simulación de clima.
+ * 
+ * - Si no viene query ?city=..., retorna TODAS las ciudades (array completo).
+ * - Si viene ?city=Nombre, busca en el array un objeto cuyo campo city
+ *   coincida (case-insensitive). Si lo encuentra, lo retorna; si no, 404.
  */
 app.get("/weather", (req, res) => {
-    const city = req.query.city;
+    const { city } = req.query;
+
+    // 1) Si no se especifica query param `city`, devolvemos todo el array:
     if (!city) {
-        // Según buenas prácticas, devolvemos 400 Bad Request si falta city.
-        return res.status(400).json({ error: "Falta el parámetro 'city'" });
+        return res.json(cities);
     }
 
-    // Simular temperatura en °C con un decimal: −10.0 a 40.0
-    const temperature = parseFloat(
-        (getRandomIntInclusive(-10, 40) + Math.random()).toFixed(1)
+    // 2) Si se envía city, lo buscamos (case-insensitive):
+    const ciudadBuscada = String(city).trim().toLowerCase();
+    const resultado = cities.find(
+        (c) => c.city.toLowerCase() === ciudadBuscada
     );
-    // Simular humedad: 0–100%
-    const humidity = getRandomIntInclusive(0, 100);
-    // Seleccionar condición al azar de conditions.js
-    const condition = conditions[getRandomIntInclusive(0, conditions.length - 1)];
 
-    const result = {
-        city: city,
-        temperature: temperature,
-        humidity: humidity,
-        condition: condition,
-    };
+    if (!resultado) {
+        // No encontramos la ciudad solicitada
+        return res
+            .status(404)
+            .json({ error: `No se encontró datos para la ciudad "${city}"` });
+    }
 
-    return res.json(result);
+    // Retornamos el objeto encontrado
+    return res.json(resultado);
 });
 
 /**
  * GET /
- *   Ruta de comprobación (salud) para ver que el servidor está activo.
+ * Ruta de “salud” para verificar que el servidor está arriba.
  */
 app.get("/", (req, res) => {
-    res.send("API de Clima funcionando. Usa GET /weather?city={ciudad}");
+    res.send("API de Clima (hardcodeada). Usa GET /weather o /weather?city=<nombre>");
 });
 
 app.listen(PORT, () => {

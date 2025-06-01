@@ -1,10 +1,9 @@
+// src/components/WeatherCard.jsx
 import React from "react";
 
 function WeatherCard({ data }) {
-    // 'data' debe ser el objeto con { city, temperature, humidity, condition }
-    if (!data) {
-        return null; // Si no hay datos, no renderizas nada.
-    }
+    if (!data) return null;
+    const { city, temperature, humidity, condition } = data;
 
     return (
         <div
@@ -16,17 +15,18 @@ function WeatherCard({ data }) {
                 maxWidth: "400px",
                 background: "#f9f9f9",
                 color: "#000",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
             }}
         >
-            <h2>Clima en {data.city}</h2>
-            <p>
-                <strong>Temperatura:</strong> {data.temperature} °C
+            <h2 style={{ margin: "0 0 0.5rem 0" }}>{city}</h2>
+            <p style={{ margin: "0.25rem 0" }}>
+                <strong>Temperatura:</strong> {temperature} °C
             </p>
-            <p>
-                <strong>Humedad:</strong> {data.humidity}%
+            <p style={{ margin: "0.25rem 0" }}>
+                <strong>Humedad:</strong> {humidity}%
             </p>
-            <p>
-                <strong>Condición:</strong> {data.condition}
+            <p style={{ margin: "0.25rem 0" }}>
+                <strong>Condición:</strong> {condition}
             </p>
         </div>
     );
